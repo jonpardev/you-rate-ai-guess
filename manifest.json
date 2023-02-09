@@ -1,0 +1,15 @@
+{
+    "short_name": "You Rate AI Guess",
+    "name": "You Rate AI Guess",
+    "icons": [
+      {
+        "src": "star_logo.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+      }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "version": "1.0.0"
+  }
