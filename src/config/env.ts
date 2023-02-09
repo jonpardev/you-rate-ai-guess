@@ -17,4 +17,4 @@ export const OPENAI_KEY = returnEnvOrThrowError('OPENAI_KEY');
 export const TMDB_KEY = returnEnvOrThrowError('TMDB_KEY');
 export const FIREBASE_PROJECT_ID = returnEnvOrThrowError('FIREBASE_PROJECT_ID');
 export const FIREBASE_CLIENT_EMAIL = returnEnvOrThrowError('FIREBASE_CLIENT_EMAIL');
-export const FIREBASE_KEY = returnEnvOrThrowError('FIREBASE_KEY');
+export const FIREBASE_KEY = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/gm, "\n");
