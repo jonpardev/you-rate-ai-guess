@@ -1,9 +1,6 @@
 import dotenv from 'dotenv';
 
-if (!process.env.NODE_ENV) {
-    console.error('[ENV] Set NODE_ENV to proceed.');
-    process.exit(1);
-}
+if (process.env.NODE_ENV) dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 const returnEnvOrThrowError = (varName: string): string => {
     const envVar = process.env[varName];
