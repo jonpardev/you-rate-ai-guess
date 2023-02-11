@@ -1,41 +1,61 @@
+import crypto from 'crypto';
 import { Timestamp } from "firebase-admin/firestore";
-import fs from "../helpers/firebase.js";
+import { OPENAI_PROMPT, OPENAI_REQUEST } from "../config/env.js";
+import fs, { converter } from "../helpers/firebase.js";
 import openai from "../helpers/openai.js";
-import { ReviewDto, ReviewType } from "../types/review.type.js";
+import { PredictedType, ReviewDto, ReviewType } from "../types/review.type.js";
 
-
-
-const requestPredictedRating = async (input: string) => {
-  return await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: `${input} So, I rate this out of 10:`,
-      temperature: 0,
-      max_tokens: 5,
-      top_p: 0.0,
-      frequency_penalty: 0.0,
-      presence_penalty: 0.0,
-      stop: ["/", "."],
-  });
+/**
+ * Conduct createCompletion through Open AI's API.
+ */
+const requestPredicted = async (review: ReviewType) => {
+  const requestJSON = JSON.parse(OPENAI_REQUEST);
+  const prompt = OPENAI_PROMPT.replace("[MOVIE]", review.movie.title) + ` ${review.reviewText}`
+  const requestConfig = {
+    ...requestJSON,
+    prompt: prompt,
+  }
+  return await openai.createCompletion(requestConfig);
 }
 
-export const saveReview = async ({ movieId, review }: ReviewType) => {
+/**
+ * Conduct add document to Firestore.
+ */
+export const saveReview = async (review: ReviewType) => {
   const reviewDto: ReviewDto = {
-    movieId: movieId,
     review: review,
     createdAt: Timestamp.fromDate(new Date()),
   }
 
+  const uuid = crypto.randomUUID().replaceAll('-', '');
+
   try {
-    const response = await requestPredictedRating(review);
-    reviewDto.rawResponse = response.data.choices[0].text;
-    if (reviewDto.rawResponse === undefined) throw new Error("[OPENAI]Response is undefined");
-    const predString = reviewDto.rawResponse.replaceAll("\r", "").replaceAll("\n", "").trim();
-    reviewDto.predicted = Number.parseInt(predString);
-    return reviewDto.predicted;
+    const response = await requestPredicted(review);
+    reviewDto.rawResponse = response.data.choices[0].text?.replaceAll("\r", "").replaceAll("\n", "").trim();
+    if (reviewDto.rawResponse === undefined) throw new Error("[OPENAI]Response is undefined.");
+    const ratingString = reviewDto.rawResponse.substring(1, 2).replaceAll("/", "").trim();
+    const reviewString = reviewDto.rawResponse.substring(6).trim();
+    reviewDto.predictedRating = Number.parseInt(ratingString);
+    reviewDto.revisedReview = reviewString;
+    return uuid;
   } catch(error) {
     if (error instanceof Error) throw error;
     throw new Error("Unexpected Error from saveReview()");
   } finally {
-    fs.collection('reviews').add(reviewDto);
+    const reviewRef = fs.collection('reviews').withConverter(converter<ReviewDto>()).doc(uuid);
+    reviewRef.set(reviewDto);
   }
+}
+
+export const readReview = async (pageId: string) => {
+  const reviewRef = fs.collection('reviews').withConverter(converter<ReviewDto>()).doc(pageId);
+  const doc = await reviewRef.get();
+  if (!doc.exists) return {} as PredictedType;
+  const data = doc.data();
+  if (data === undefined) return {} as PredictedType;
+  return {
+    movie: data.review.movie,
+    predictedRating: data.predictedRating,
+    revisedReview: data.revisedReview,
+  } satisfies PredictedType;
 }

@@ -1,14 +1,22 @@
 import { Timestamp } from "firebase-admin/firestore";
+import { MovieType } from "./tmdb.type.js";
 
 export type ReviewType = {
-  movieId: number;
-  review: string;
+  movie: MovieType;
+  reviewText: string;
 }
 
 export type ReviewDto = {
-  movieId: number,
-  review: string,
+  review: ReviewType,
+  // user?: string, //TODO this should not be able to undefined once auth is completed
   createdAt: Timestamp,
   rawResponse?: string,
-  predicted?: number,
+  predictedRating?: number,
+  revisedReview?: string,
+}
+
+export type PredictedType = {
+  movie: MovieType,
+  predictedRating?: number,
+  revisedReview?: string,
 }
