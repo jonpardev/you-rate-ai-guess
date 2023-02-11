@@ -3,8 +3,8 @@
     "name": "You Rate AI Guess",
     "icons": [
       {
-        "src": "star_logo.png",
-        "sizes": "512x512",
+        "src": "yrig.png",
+        "sizes": "205x205",
         "type": "image/png",
         "purpose": "any"
       }
