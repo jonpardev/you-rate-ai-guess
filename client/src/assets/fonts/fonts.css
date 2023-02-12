@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'NotoSansDisplay';
+    font-style: normal;
+    font-weight: 100 900;
+    font-stretch: 62.5% 100%;
+    font-display: swap;
+    src:
+        url("./NotoSansDisplay.woff2")
+        format("woff2 supports variations"),
+        url("./NotoSansDisplay.woff2")
+        format("woff2-variations"),
+        url("./NotoSansDisplay.woff2")
+        format("woff2");
+    }
+
+@font-face {
+    font-family: "Recursive";
+    font-style: oblique 0deg 15deg;
+    font-weight: 300 1000;
+    font-display: swap;
+    src:
+        url("./Recursive.woff2")
+        format("woff2 supports variations"),
+        url("./Recursive.woff2")
+        format("woff2-variations"),
+        url("./Recursive.woff2")
+        format("woff2");
+}

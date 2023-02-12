@@ -1,0 +1,15 @@
+# dependencies
+.yarn/
+node_modules/
+
+# production
+build/
+dist/
+
+# secrets
+**/.DS_Store*
+**/.env*
+**/serviceAccountKey.json*
+
+# logs
+**/*.log*

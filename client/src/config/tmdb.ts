@@ -1,0 +1,1 @@
+export const tmdbImgBaseUrl = (size?: number) => (`https://image.tmdb.org/t/p/w${size ?? 500}/`);

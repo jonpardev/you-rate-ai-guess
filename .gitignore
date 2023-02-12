@@ -1,0 +1,23 @@
+# dependencies
+.yarn/
+**/node_modules/
+.pnp.cjs
+.pnp.loader.mjs
+.yarnrc.yml
+yarn.lock
+
+# production
+build/
+dist/
+
+# secrets
+**/.DS_Store*
+**/.env*
+**/serviceAccountKey.json*
+
+# logs
+**/*.log*
+vite.config.ts.*
+
+# editor
+.vscode/
