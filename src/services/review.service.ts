@@ -26,24 +26,24 @@ export const saveReview = async (review: ReviewType) => {
     review: review,
     createdAt: Timestamp.fromDate(new Date()),
   }
-
   const uuid = crypto.randomUUID().replaceAll('-', '');
 
   try {
     const response = await requestPredicted(review);
     reviewDto.rawResponse = response.data.choices[0].text?.replaceAll("\r", "").replaceAll("\n", "").trim();
-    if (reviewDto.rawResponse === undefined) throw new Error("[OPENAI]Response is undefined.");
-    const ratingString = reviewDto.rawResponse.substring(1, 2).replaceAll("/", "").trim();
-    const reviewString = reviewDto.rawResponse.substring(6).trim();
-    reviewDto.predictedRating = Number.parseInt(ratingString);
-    reviewDto.revisedReview = reviewString;
-    return uuid;
+    if (reviewDto.rawResponse !== undefined) {
+      const ratingString = reviewDto.rawResponse.substring(1, 2).replaceAll("/", "").trim();
+      const reviewString = reviewDto.rawResponse.substring(6).trim();
+      reviewDto.predictedRating = Number.parseInt(ratingString);
+      reviewDto.revisedReview = reviewString;
+    }
   } catch(error) {
     if (error instanceof Error) throw error;
     throw new Error("Unexpected Error from saveReview()");
   } finally {
     const reviewRef = fs.collection('reviews').withConverter(converter<ReviewDto>()).doc(uuid);
-    reviewRef.set(reviewDto);
+    await reviewRef.set(reviewDto);
+    return uuid;
   }
 }
 
