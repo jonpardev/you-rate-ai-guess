@@ -6,7 +6,7 @@ const TmdvLinkWithLogo = () => {
 
 const TmdbAttribution  = () => {
   return (
-    <div className="w-full text-sm text-center leading-tight">
+    <div className="w-full text-sm text-center leading-tight mt-2">
       <span className="inline-block">This website uses <TmdvLinkWithLogo /> API&nbsp;</span>
       <span className="inline-block">but is not endorsed or certified by <TmdvLinkWithLogo />.</span>
     </div>

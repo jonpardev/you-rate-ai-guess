@@ -59,7 +59,7 @@ const Search = () => {
     <>
     <Bubble className="flex items-center text-white bg-red-700 hover:bg-red-800">
       <SvgSearch className="fill-white w-[1.5em] ml-4" />
-      <form className="w-full flex flex-col" onSubmit={handleSubmitSearchForm}>
+      <form className="w-full flex flex-col" onSubmit={handleSubmitSearchForm} action=".">
         <input placeholder="Find a movie with a title" name="q" value={query} onChange={queryChange} minLength={1} required type="search"
             className={`w-full outline-none ph:text-lg p-4 text-white placeholder:text-white focus:placeholder:text-white/[0] bg-red-700/[0]`} />
       </form>
