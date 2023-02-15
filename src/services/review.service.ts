@@ -10,7 +10,8 @@ import { PredictedType, ReviewDto, ReviewType } from "../types/review.type.js";
  */
 const requestPredicted = async (review: ReviewType) => {
   const requestJSON = JSON.parse(OPENAI_REQUEST);
-  const prompt = OPENAI_PROMPT.replace("[MOVIE]", review.movie.title) + ` ${review.reviewText}`
+  const reviewText = review.drafts.join(' '); // When sending it to Open AI, join with a space.
+  const prompt = OPENAI_PROMPT.replace("[MOVIE]", review.movie.title) + ` ${reviewText}`
   const requestConfig = {
     ...requestJSON,
     prompt: prompt,
