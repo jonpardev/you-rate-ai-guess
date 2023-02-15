@@ -8,6 +8,7 @@ type resultQuery = {
 
 export const postReview = (req: Request, res: Response) => {
   const review: ReviewType = req.body;
+  if (review.drafts.join('').length > 400) res.sendStatus(500); // To make users can recognize the characters intuitively, join without a space.
   saveReview(review)
     .then(pageId => res.status(200).send(pageId))
     .catch((err: Error) => res.status(500).send(err));

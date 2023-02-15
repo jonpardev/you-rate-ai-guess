@@ -14,7 +14,7 @@ const Landing = () => {
       <div className="w-full text-2xl ph:text-3xl leading-tight text-neutral-800 font-Recursive font-[800] text-center whitespace-nowrap">AI can guess<br />what you would give<br />for rating a movie?</div>
       <div className="w-full flex flex-col items-center gap-1">
         <InstructionStep emoji={emojiDetective} text={"Find a movie"} />
-        <InstructionStep emoji={emojiWritingHand} text={"Write a simple review"} />
+        <InstructionStep emoji={emojiWritingHand} text={"List your thoughts"} />
         <InstructionStep emoji={emojiRobot} text={"AI will guess your rating and even revise your review fancier!"} />
       </div>
     </Bubble>

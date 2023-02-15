@@ -12,7 +12,7 @@ const Backdrop = ({ movie, children }: Props) => {
     <>
     {movie?.backdrop != null ? (
     <div className={`bg-no-repeat bg-cover bg-center`} style={{ backgroundImage: `url('${tmdbImgBaseUrl(200)}${movie?.backdrop}')`}}>
-      <div className="w-full rounded-lg overflow-clip backdrop-blur bg-black bg-opacity-90">
+      <div className="w-full rounded-lg overflow-clip backdrop-blur bg-black bg-opacity-75">
         {children}
       </div>
     </div>

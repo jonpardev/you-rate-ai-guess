@@ -8,7 +8,7 @@ export type MovieType = {
 
 export type ReviewType = {
   movie: MovieType,
-  reviewText: string,
+  drafts: string[],
 }
 
 export type ResultType = {

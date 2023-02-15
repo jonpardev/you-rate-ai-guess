@@ -1,4 +1,4 @@
-import { MovieType, ReviewType } from "../types/movie.type";
+import { ReviewType } from "../types/movie.type";
 
 export const saveReviewDraft = (review: ReviewType) => {
   sessionStorage.setItem('reviewDraft', JSON.stringify(review));

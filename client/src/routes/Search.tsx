@@ -4,6 +4,7 @@ import { emojiWearyCat, SvgSearch } from "../assets/images/images";
 import Bubble from "../components/Bubble";
 import TmdbAttribution from "../components/TmdbAttribution";
 import { BASE_NAME } from "../config/env";
+import { tmdbImgBaseUrl } from "../config/tmdb";
 import { useInput } from "../helpers/useInput";
 import { getSearch } from "../services/movie.service";
 import { saveReviewDraft } from "../services/sessionStorage.service";
@@ -48,7 +49,7 @@ const Search = () => {
   const handleClickMovie = (movie: MovieType) => {
     const review: ReviewType = {
       movie: movie,
-      reviewText: '',
+      drafts: [''],
     }
     saveReviewDraft(review);
     navigate(`${BASE_NAME}/review`);
@@ -59,31 +60,40 @@ const Search = () => {
     <Bubble className="flex items-center text-white bg-red-700 hover:bg-red-800">
       <SvgSearch className="fill-white w-[1.5em] ml-4" />
       <form className="w-full flex flex-col" onSubmit={handleSubmitSearchForm}>
-        <input placeholder="Find a movie with its title" name="q" value={query} onChange={queryChange} minLength={1} required
+        <input placeholder="Find a movie with a title" name="q" value={query} onChange={queryChange} minLength={1} required type="search"
             className={`w-full outline-none ph:text-lg p-4 text-white placeholder:text-white focus:placeholder:text-white/[0] bg-red-700/[0]`} />
       </form>
     </Bubble>
+    {/* Loading Search Result */}
     {isLoading && (
-      <Bubble className="w-full p-8 bg-neutral-200 flex flex-col gap-4">
-        <div className="bg-neutral-500 p-2 animate-pulse rounded-lg"><br /></div>
-        <div className="bg-neutral-500 p-2 animate-pulse rounded-lg"><br /></div>
-        <div className="bg-neutral-500 p-2 animate-pulse rounded-lg"><br /></div>
-      </Bubble> 
+    <Bubble className="w-full p-4 bg-neutral-200 flex gap-2">
+      <div className="w-16 h-24 shrink-0 rounded-lg bg-neutral-400 animate-pulse"><br /></div>
+      <div>
+        <div className="w-40 h-[1.5em] rounded-lg bg-neutral-400 animate-pulse"><br /></div>
+        <div className="w-10 h-[1.2em] rounded-lg bg-neutral-400 animate-pulse mt-1"><br /></div>
+      </div>
+    </Bubble> 
     )}
+    {/* Search Result */}
     {(isLoading === false && movies) && (
-    <Bubble className="text-black bg-neutral-200 py-4">
+    <Bubble className="text-black bg-neutral-200 py-8">
     {(movies.length === 0) ? (
       <div className="w-full text-center text-[1.25em] font-[500]">
         <img src={emojiWearyCat.src} alt={emojiWearyCat.alt} className="w-[5em] inline-block" />
         <br />
-        <span>We could not find any movie with the title.</span>
+        <span className="text-sm ph:text-lg">We could not find any movie with the title</span>
       </div>
     ) : (<>
     {movies.map((movie, index) => (
       <div key={index} onClick={() => handleClickMovie(movie)}
-        className="hover:bg-neutral-300 px-8 py-4 cursor-pointer">
-        <div className="font-semibold">{movie.title}</div>
-        <div className="text-[0.75em]">{movie.year}</div>
+        className="hover:bg-neutral-300 p-4 cursor-pointer flex gap-2">
+        <div className="w-16 shrink-0 rounded-lg">
+          {movie.poster && <img src={`${tmdbImgBaseUrl(200)}${movie.poster}`} className="rounded-lg" loading="lazy" />}
+        </div>
+        <div>
+          <div className="font-semibold">{movie.title}</div>
+          <div className="text-[0.75em]">{movie.year}</div>
+        </div>
       </div>
     ))}
     </>)}

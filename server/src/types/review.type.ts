@@ -3,7 +3,7 @@ import { MovieType } from "./tmdb.type.js";
 
 export type ReviewType = {
   movie: MovieType;
-  reviewText: string;
+  drafts: string[];
 }
 
 export type ReviewDto = {
